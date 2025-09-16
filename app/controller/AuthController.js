@@ -2,8 +2,9 @@ const { genSaltSync, hashSync, compareSync } = require('bcryptjs')
 const { StatusCodes } = require('http-status-codes')
 const { userModel } = require('../schema/User')
 const { HttpError } = require('../common/HttpError')
+const env = require('../config/env')
 
-const SALT_ROUND = 12
+const SALT_ROUND = env.BCRYPT_SALT_ROUND
 
 class AuthController {
     /**

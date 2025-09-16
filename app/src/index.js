@@ -3,16 +3,17 @@ const express = require('express')
 const { ReqTimeLog } = require('../middleware/ReqTimeLog')
 const { router } = require('../routes')
 const { default: mongoose } = require('mongoose')
-const { StatusCodes, getReasonPhrase } = require('http-status-codes')
 const { errorHandler } = require('../common/errorHanler')
+const env = require('../config/env')
+
 const app = express()
-const port = 3000
+const port = env.PORT
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 mongoose
-    .connect('mongodb://127.0.0.1:27017', { dbName: 'express-app-js' })
+    .connect(env.MONGO_URI, { dbName: env.MONGO_DB_NAME })
     .then(function (value) {
         console.log('mongoose version:', value.version)
     })
