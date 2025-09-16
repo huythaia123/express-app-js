@@ -1,7 +1,10 @@
-const express = require("express")
-const { ReqTimeLog } = require("../middleware/ReqTimeLog")
-const { router } = require("../routes")
-const { default: mongoose } = require("mongoose")
+require('dotenv').config()
+const express = require('express')
+const { ReqTimeLog } = require('../middleware/ReqTimeLog')
+const { router } = require('../routes')
+const { default: mongoose } = require('mongoose')
+const { StatusCodes, getReasonPhrase } = require('http-status-codes')
+const { errorHandler } = require('../common/errorHanler')
 const app = express()
 const port = 3000
 
@@ -9,9 +12,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 mongoose
-    .connect("mongodb://127.0.0.1:27017", { dbName: "express-app-js" })
+    .connect('mongodb://127.0.0.1:27017', { dbName: 'express-app-js' })
     .then(function (value) {
-        console.log("mongoose version:", value.version)
+        console.log('mongoose version:', value.version)
     })
     .catch(function (err) {
         throw err
@@ -21,7 +24,10 @@ mongoose
 app.use(ReqTimeLog)
 
 // router
-app.use("/", router)
+app.use('/', router)
+
+// error handling
+app.use(errorHandler)
 
 app.listen(port, function () {
     console.log(`app listening on port ${port}`)
