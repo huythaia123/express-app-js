@@ -1,0 +1,22 @@
+{
+    "name": "express-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ./app/src/index",
+        "dev": "nodemon ./app/src/index"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^3.0.2",
+        "express": "^5.1.0",
+        "http-status-codes": "^2.3.0",
+        "mongoose": "^8.18.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.10"
+    }
+}
