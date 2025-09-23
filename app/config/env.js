@@ -9,7 +9,7 @@ const env = cleanEnv(process.env, {
     MONGO_DB_NAME: str(),
 
     // # BCRYPT
-    BCRYPT_SALT_ROUND: num(),
+    BCRYPT_SALT_ROUNDS: num(),
 })
 
 module.exports = env

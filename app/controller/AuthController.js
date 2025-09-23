@@ -1,10 +1,7 @@
-const { genSaltSync, hashSync, compareSync } = require('bcryptjs')
 const { StatusCodes } = require('http-status-codes')
 const { userModel } = require('../schema/User')
 const { HttpError } = require('../common/HttpError')
-const env = require('../config/env')
-
-const SALT_ROUND = env.BCRYPT_SALT_ROUND
+const { hashPassword, comparePassword } = require('../utils/bcrypt-handle')
 
 class AuthController {
     /**
@@ -13,8 +10,7 @@ class AuthController {
      */
     static async register(req, res) {
         const body = req.body
-        const salt = genSaltSync(SALT_ROUND)
-        const hashPw = hashSync(body.password, salt)
+        const hashPw = await hashPassword(body.password)
 
         let user = await userModel.findOne({ email: body.email })
         if (user)
@@ -38,7 +34,7 @@ class AuthController {
         const user = await userModel.findOne({ email: body.email })
 
         if (!user) throw new HttpError({ statusCode: StatusCodes.UNAUTHORIZED })
-        if (!compareSync(body.password, user.password))
+        if (!(await comparePassword(body.password, user.password)))
             throw new HttpError({ statusCode: StatusCodes.UNAUTHORIZED })
 
         return res.json({ user })
